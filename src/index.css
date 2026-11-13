@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --nav-height: 4rem;
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --nav-height: 4.25rem;
+    }
+  }
+
+  html {
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    scroll-behavior: smooth;
+    overflow-x: clip;
+  }
+  
+  ::selection {
+    background-color: #555B47;
+    color: #E9E3D7;
+  }
+
+  body {
+    background-color: #E9E3D7;
+    color: #171A12;
+    overflow-x: clip;
+    min-height: 100%;
+  }
+
+  /* Internal element anchors offset for fixed navbar; full-bleed sections use built-in top padding above their headers */
+  :not(section):not(footer)[id] {
+    scroll-margin-top: calc(var(--nav-height) + 1rem);
+  }
+}
+
+/* Gentle proximity alignment on desktop so sections settle cleanly at viewport boundaries without aggressive scroll locking */
+.snap-scene {
+  scroll-margin-top: 0px;
+}
+
+@media (min-width: 1024px) and (min-height: 680px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+
+  .snap-scene {
+    scroll-snap-align: start;
+  }
+}
+
+/* Reduced motion: disable non-essential GSAP and CSS animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .editorial-img-zoom:hover {
+    transform: none;
+  }
+}
+
+/* Custom editorial typography */
+.editorial-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.editorial-italic {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+}
+
+.editorial-caps {
+  font-family: 'Manrope', sans-serif;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Delicate hairline rules */
+.hairline-b {
+  border-bottom: 1px solid rgba(85, 91, 71, 0.12);
+}
+
+.hairline-t {
+  border-top: 1px solid rgba(85, 91, 71, 0.12);
+}
+
+.hairline-l {
+  border-left: 1px solid rgba(85, 91, 71, 0.12);
+}
+
+.hairline-r {
+  border-right: 1px solid rgba(85, 91, 71, 0.12);
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #151D14;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555B47;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #92947A;
+}
+
+/* Smooth ambient lighting glow */
+.ambient-halo {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+/* Image zoom hover effect */
+.editorial-img-zoom {
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-img-zoom:hover {
+  transform: scale(1.04);
+}
