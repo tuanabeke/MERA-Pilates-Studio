@@ -125,46 +125,49 @@ export const StudioSanctuary: React.FC = () => {
     <section
       id="sanctuary"
       ref={sanctuaryRef}
-      className="snap-scene relative min-h-[100svh] pt-20 pb-10 sm:pt-24 sm:pb-14 lg:pt-[74px] lg:pb-5 2xl:pt-[84px] 2xl:pb-8 bg-olive-900 text-ivory overflow-hidden flex flex-col justify-between"
+      className="snap-scene relative lg:min-h-[100svh] pt-16 pb-16 sm:pt-20 sm:pb-20 lg:pt-[74px] lg:pb-5 2xl:pt-[84px] 2xl:pb-8 bg-olive-900 text-ivory overflow-hidden flex flex-col justify-between"
     >
       {/* Ambient Lighting Accents */}
       <div className="ambient-halo top-20 right-0 w-[550px] h-[550px] bg-clay-300/10 pointer-events-none"></div>
       <div className="ambient-halo bottom-10 left-0 w-[500px] h-[500px] bg-sage-300/10 pointer-events-none"></div>
 
-      <div className="relative w-full max-w-[1840px] mx-auto px-5 sm:px-8 lg:px-10 xl:px-14 flex-1 flex flex-col justify-between gap-5 lg:gap-4 2xl:gap-7">
+      <div className="relative w-full max-w-[1840px] mx-auto px-5 sm:px-8 lg:px-10 xl:px-14 flex-1 flex flex-col justify-between gap-7 lg:gap-4 2xl:gap-7">
         
         {/* Section Header */}
         <div
           ref={headerRef}
-          className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-3 2xl:pb-4 border-b border-olive-800 shrink-0"
+          className="flex flex-col lg:flex-row lg:items-end justify-between gap-3.5 lg:gap-4 pb-4 lg:pb-3 2xl:pb-4 border-b border-olive-800 shrink-0"
         >
-          <div className="space-y-1 max-w-3xl">
-            <div className="flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-clay-300"></span>
-              <span className="editorial-caps text-[10px] font-semibold text-sand-300 tracking-widest">
+          <div className="space-y-1.5 lg:space-y-1 max-w-3xl">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-clay-300"></span>
+              <span className="editorial-caps text-[10px] max-sm:tracking-[0.18em] font-semibold text-sand-300 tracking-widest">
                 The Physical Sanctuary
               </span>
             </div>
             
-            <h2 className="font-serif text-3xl sm:text-5xl lg:text-[36px] xl:text-[42px] 2xl:text-[50px] font-light text-ivory leading-[1.04] tracking-tight">
+            <h2 className="font-serif text-[2rem] sm:text-5xl lg:text-[36px] xl:text-[42px] 2xl:text-[50px] font-light text-ivory leading-[1.08] lg:leading-[1.04] tracking-tight">
               An architectural space <span className="italic text-sand-200 font-normal">engineered for restoration.</span>
             </h2>
           </div>
 
-          <p className="text-xs sm:text-sm 2xl:text-base text-sand-300/85 font-light max-w-md leading-relaxed lg:text-right">
+          <p className="lg:hidden text-[13.5px] sm:text-sm text-sand-300/85 font-light max-w-md leading-[1.6]">
+            Located on Broome Street in SoHo—crafted from mineral lime plaster and solid white oak.
+          </p>
+          <p className="hidden lg:block text-xs sm:text-sm 2xl:text-base text-sand-300/85 font-light max-w-md leading-relaxed lg:text-right">
             Located on Broome Street in SoHo. Every tactile material—from mineral lime plaster to hand-finished white oak—is 
             chosen to calm sensory fatigue and return you to natural equilibrium.
           </p>
         </div>
 
         {/* Balanced Architectural Spread: Natural-Proportion Studio Photograph + Breathing 2x2 Sensory Pillars */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-7 xl:gap-9 items-stretch my-auto">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-7 xl:gap-9 items-stretch my-auto">
           
           {/* Left Column: Natural 16:10 / 16:9 Architectural Studio Photograph (Span 7) */}
           <div className="lg:col-span-7 flex flex-col">
             <div
               ref={scaleImageWrapperRef}
-              className="relative w-full aspect-[16/10] lg:aspect-auto lg:h-full lg:min-h-[340px] xl:min-h-[380px] 2xl:min-h-[450px] rounded-2xl xl:rounded-3xl overflow-hidden shadow-2xl border border-olive-800 will-change-transform group"
+              className="relative w-full max-sm:aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-full lg:min-h-[340px] xl:min-h-[380px] 2xl:min-h-[450px] rounded-2xl xl:rounded-3xl overflow-hidden shadow-xl lg:shadow-2xl border border-olive-800 will-change-transform group"
             >
               <img
                 ref={innerImgRef}
@@ -173,20 +176,20 @@ export const StudioSanctuary: React.FC = () => {
                 loading="lazy"
                 className="w-full h-full object-cover object-center editorial-img-zoom will-change-transform"
               />
-              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-olive-900/95 via-olive-900/35 to-transparent pointer-events-none"></div>
+              <div className="absolute inset-x-0 bottom-0 h-1/3 lg:h-1/2 bg-gradient-to-t from-olive-900/80 lg:from-olive-900/95 via-olive-900/20 lg:via-olive-900/35 to-transparent pointer-events-none"></div>
 
               {/* Floating Architectural Annotation */}
-              <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex flex-col xl:flex-row xl:items-end justify-between gap-2.5 text-ivory">
-                <div className="space-y-1">
-                  <span className="editorial-caps text-[9.5px] text-sand-200 font-semibold tracking-widest block">
+              <div className="absolute bottom-3.5 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex flex-col xl:flex-row xl:items-end justify-between gap-2 text-ivory">
+                <div className="space-y-0.5 sm:space-y-1">
+                  <span className="editorial-caps text-[9px] sm:text-[9.5px] max-sm:tracking-[0.16em] text-sand-200 font-semibold tracking-widest block">
                     The Main Atelier • 482 Broome Street, SoHo
                   </span>
-                  <p className="font-serif italic text-xl sm:text-2xl 2xl:text-3xl text-ivory font-light leading-tight">
+                  <p className="hidden lg:block font-serif italic text-xl sm:text-2xl 2xl:text-3xl text-ivory font-light leading-tight">
                     "Where warm shadows dance against mineral lime plaster."
                   </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5 text-[11px] text-sand-200/90 font-medium shrink-0">
+                <div className="hidden sm:flex flex-wrap items-center gap-2.5 sm:gap-3.5 text-[11px] text-sand-200/90 font-medium shrink-0">
                   <span>Circadian Light</span>
                   <span aria-hidden="true">•</span>
                   <span>Solid Oak Frames</span>
@@ -200,27 +203,27 @@ export const StudioSanctuary: React.FC = () => {
           {/* Right Column: Spacious 2x2 Atmospheric Sensory Pillars (Span 5) */}
           <div
             ref={featuresRef}
-            className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3.5 xl:gap-4 2xl:gap-5 items-stretch"
+            className="lg:col-span-5 grid grid-cols-2 max-sm:gap-x-4 max-sm:gap-y-6 sm:gap-3.5 xl:gap-4 2xl:gap-5 items-stretch"
           >
             {sanctuaryPillars.map((pillar, idx) => {
               const Icon = pillar.icon;
               return (
                 <div
                   key={idx}
-                  className="p-4 sm:p-5 lg:p-4 xl:p-5 2xl:p-6 rounded-2xl bg-forest-950/35 border border-olive-800/90 hover:border-clay-300/40 transition-colors duration-300 flex flex-col justify-between gap-2.5 group"
+                  className="max-sm:pt-3.5 max-sm:border-t max-sm:border-olive-800 sm:p-5 lg:p-4 xl:p-5 2xl:p-6 sm:rounded-2xl sm:bg-forest-950/35 sm:border sm:border-olive-800/90 sm:hover:border-clay-300/40 transition-colors duration-300 flex flex-col justify-between max-sm:justify-start gap-2 sm:gap-2.5 group"
                 >
-                  <div className="space-y-2 2xl:space-y-3">
-                    <div className="flex items-center gap-2.5 text-clay-200">
-                      <Icon className="w-4 h-4 text-clay-200 shrink-0" />
-                      <span className="editorial-caps text-[9.5px] font-semibold text-sand-300 tracking-wider">
+                  <div className="space-y-1.5 sm:space-y-2 2xl:space-y-3">
+                    <div className="flex items-center gap-2 text-clay-200">
+                      <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-clay-200 shrink-0" />
+                      <span className="editorial-caps text-[8.5px] sm:text-[9.5px] max-sm:tracking-[0.14em] font-semibold text-sand-300 tracking-wider">
                         {pillar.label}
                       </span>
                     </div>
-                    <h4 className="font-serif text-lg xl:text-xl 2xl:text-2xl text-ivory font-light group-hover:text-sand-200 transition-colors leading-snug">
+                    <h4 className="font-serif text-[17px] sm:text-lg xl:text-xl 2xl:text-2xl text-ivory font-light group-hover:text-sand-200 transition-colors leading-snug">
                       {pillar.title}
                     </h4>
                   </div>
-                  <p className="text-xs 2xl:text-sm text-sand-300/85 font-light leading-relaxed">
+                  <p className="text-[12.5px] sm:text-xs 2xl:text-sm text-sand-300/80 sm:text-sand-300/85 font-light leading-[1.55] sm:leading-relaxed">
                     {pillar.desc}
                   </p>
                 </div>

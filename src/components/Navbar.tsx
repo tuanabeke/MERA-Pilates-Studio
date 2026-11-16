@@ -33,7 +33,11 @@ export const Navbar: React.FC = () => {
 
       const navBottom = headerRef.current?.getBoundingClientRect().bottom ?? 68;
       const probeY = navBottom + 2;
-      const lightSections = document.querySelectorAll<HTMLElement>('[data-nav-theme="light"]');
+      const isMobile = window.innerWidth < 1024;
+      const selector = isMobile
+        ? '[data-nav-theme="light"], [data-nav-theme-mobile="light"]'
+        : '[data-nav-theme="light"]';
+      const lightSections = document.querySelectorAll<HTMLElement>(selector);
       let light = false;
       lightSections.forEach((el) => {
         const rect = el.getBoundingClientRect();
@@ -153,15 +157,15 @@ export const Navbar: React.FC = () => {
           <div className="lg:hidden flex items-center">
             <a
               href="#"
-              className="flex items-center gap-2.5 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-sm"
+              className="flex items-center gap-2.5 py-1 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-sm"
               aria-label="MERA Reformer Studio — back to top"
             >
               {logoImages('h-6')}
               <div className="flex flex-col">
-                <span className={`font-serif text-lg tracking-[0.22em] uppercase font-light leading-none transition-colors duration-300 ${textMain}`}>
+                <span className={`font-serif text-[19px] tracking-[0.22em] uppercase font-light leading-none transition-colors duration-300 ${textMain}`}>
                   MERA
                 </span>
-                <span className={`text-[6.5px] uppercase tracking-[0.28em] font-medium mt-0.5 transition-colors duration-300 ${textSub}`}>
+                <span className={`text-[7.5px] uppercase tracking-[0.24em] font-medium mt-1 transition-colors duration-300 ${textSub}`}>
                   Reformer Studio
                 </span>
               </div>
@@ -198,23 +202,23 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* MOBILE ACTIONS */}
-          <div className="flex items-center gap-2.5 lg:hidden">
+          <div className="flex items-center gap-1.5 lg:hidden">
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp Concierge"
-              className={`p-2 rounded-full active:scale-95 transition-all flex items-center justify-center focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 ${iconHover}`}
+              className={`w-10 h-10 rounded-full active:scale-95 transition-all flex items-center justify-center focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 ${iconHover}`}
             >
               <WhatsAppIcon className="w-5 h-5" />
             </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`p-2 transition-colors duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-sm ${lightTone ? 'text-forest-950 hover:text-olive-500' : 'text-ivory hover:text-sand-200'}`}
+              className={`w-10 h-10 flex items-center justify-center transition-colors duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-full ${lightTone ? 'text-forest-950 hover:text-olive-500' : 'text-ivory hover:text-sand-200'}`}
               aria-label="Toggle Menu"
               aria-expanded={mobileMenuOpen}
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
 
@@ -223,41 +227,42 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Slide-down Overlay (always dark for consistent contrast) */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-white/10 bg-forest-950/95 backdrop-blur-xl px-6 pt-6 pb-10 space-y-6 animate-in fade-in slide-in-from-top-2 duration-300 shadow-2xl text-ivory">
-          <div className="text-center pb-4 border-b border-sand-300/10">
-            <p className="font-serif italic text-lg text-sand-200">
-              Where breath shapes form.
-            </p>
-            <p className="text-[9px] uppercase tracking-[0.3em] text-sand-300/60 mt-1">
-              SoHo, New York
-            </p>
-          </div>
-
-          <div className="flex flex-col space-y-4">
-            {[...leftNavLinks, ...rightNavLinks].map((link) => (
+        <div className="lg:hidden border-t border-white/10 bg-forest-950/98 backdrop-blur-xl px-5 pt-5 pb-8 space-y-5 animate-in fade-in slide-in-from-top-2 duration-300 shadow-2xl text-ivory">
+          <nav aria-label="Mobile navigation" className="flex flex-col divide-y divide-white/10">
+            {[...leftNavLinks, ...rightNavLinks].map((link, idx) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="editorial-caps text-xs font-semibold text-ivory hover:text-sand-300 py-2 border-b border-white/5 flex items-center justify-between"
+                className="py-3.5 flex items-center justify-between group active:opacity-75 transition-opacity"
               >
-                <span>{link.label}</span>
-                <span className="text-sand-400 text-xs">→</span>
+                <div className="flex items-baseline gap-3.5">
+                  <span className="font-mono text-[10px] text-clay-300/80">
+                    0{idx + 1}
+                  </span>
+                  <span className="font-serif text-xl font-light text-ivory group-hover:text-sand-200 transition-colors">
+                    {link.label}
+                  </span>
+                </div>
+                <span className="text-sand-400/70 text-xs">→</span>
               </a>
             ))}
-          </div>
+          </nav>
 
-          <div className="pt-2">
+          <div className="pt-1 space-y-3">
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-3.5 rounded-full bg-olive-400 text-ivory text-xs editorial-caps font-semibold flex items-center justify-center gap-2.5 shadow-lg active:scale-95 transition-transform"
+              className="w-full py-3.5 rounded-full bg-ivory text-forest-950 text-xs editorial-caps tracking-[0.18em] font-semibold flex items-center justify-center gap-2.5 shadow-lg active:scale-95 transition-transform"
             >
               <WhatsAppIcon className="w-4 h-4" />
-              <span>Connect via WhatsApp</span>
+              <span>WhatsApp Concierge</span>
             </a>
+            <p className="text-center text-[10px] editorial-caps tracking-[0.2em] text-sand-300/60">
+              482 Broome St • SoHo, New York
+            </p>
           </div>
         </div>
       )}

@@ -19,13 +19,14 @@ export const Hero: React.FC = () => {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (prefersReducedMotion) return;
 
+      const isMobile = window.matchMedia('(max-width: 1023px)').matches;
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
       // Image entrance with subtle scale & brightness bloom
       tl.fromTo(
         bgImageRef.current,
-        { scale: 1.15, filter: 'brightness(0.6)' },
-        { scale: 1.02, filter: 'brightness(0.82)', duration: 2.2, ease: 'power2.out' },
+        { scale: isMobile ? 1.06 : 1.15, filter: isMobile ? 'brightness(0.72)' : 'brightness(0.6)' },
+        { scale: isMobile ? 1 : 1.02, filter: isMobile ? 'brightness(0.92)' : 'brightness(0.82)', duration: isMobile ? 1.6 : 2.2, ease: 'power2.out' },
         0
       );
 
@@ -42,7 +43,7 @@ export const Hero: React.FC = () => {
         const lines = headlineRef.current.querySelectorAll('.hero-line');
         tl.fromTo(
           lines,
-          { opacity: 0, y: 45, rotateX: 12 },
+          { opacity: 0, y: isMobile ? 28 : 45, rotateX: 12 },
           { opacity: 1, y: 0, rotateX: 0, duration: 1.3, stagger: 0.15 },
           0.5
         );
@@ -58,7 +59,7 @@ export const Hero: React.FC = () => {
 
       // Subtle depth-of-field background parallax when scrolling down to Scene 02
       gsap.to(bgImageRef.current, {
-        yPercent: 8,
+        yPercent: isMobile ? 4 : 8,
         ease: 'none',
         scrollTrigger: {
           trigger: heroRef.current,
@@ -83,20 +84,24 @@ export const Hero: React.FC = () => {
           ref={bgImageRef}
           src="/images/mera-hero.jpg"
           alt="MERA Reformer Pilates Studio sunlit space with white oak reformers"
-          className="w-full h-full object-cover object-center will-change-transform"
+          className="w-full h-full object-cover object-[78.5%_center] sm:object-[74%_center] lg:object-center origin-[78.5%_center] sm:origin-[74%_center] lg:origin-center will-change-transform"
         />
-        {/* Layered Cinematic Vignettes for Pristine Editorial Legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/35 to-black/55 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-forest-950/75 via-forest-950/25 to-forest-950/45 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(11,16,11,0.5)_100%)] pointer-events-none"></div>
+        {/* Mobile Art-Directed Gradient Overlays: Keeps Subject Clear & Typography Legible */}
+        <div className="lg:hidden absolute inset-0 bg-[linear-gradient(180deg,rgba(8,12,8,0.58)_0%,rgba(11,16,11,0.14)_28%,rgba(11,16,11,0.32)_46%,rgba(11,16,11,0.78)_72%,rgba(11,16,11,0.94)_100%)] pointer-events-none"></div>
+        <div className="lg:hidden absolute inset-0 bg-gradient-to-r from-forest-950/55 via-forest-950/15 to-transparent pointer-events-none"></div>
+
+        {/* Desktop Layered Cinematic Vignettes for Pristine Editorial Legibility */}
+        <div className="hidden lg:block absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/35 to-black/55 pointer-events-none"></div>
+        <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-forest-950/75 via-forest-950/25 to-forest-950/45 pointer-events-none"></div>
+        <div className="hidden lg:block absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(11,16,11,0.5)_100%)] pointer-events-none"></div>
       </div>
 
       {/* Top Context Eyebrow Bar */}
       <div ref={badgeRef} className="relative z-10 w-full max-w-[1840px] mx-auto shrink-0 pt-1">
         <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-forest-950/65 backdrop-blur-md border border-ivory/15">
-            <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
-            <span className="editorial-caps text-[10px] sm:text-[10.5px] font-semibold text-sand-200 tracking-[0.24em]">
+          <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3 sm:px-3.5 py-1.5 rounded-full bg-forest-950/65 backdrop-blur-md border border-ivory/15">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#25D366] animate-pulse shrink-0"></span>
+            <span className="editorial-caps text-[9px] sm:text-[10.5px] font-semibold text-sand-200 tracking-[0.12em] sm:tracking-[0.24em]">
               SoHo Atelier • Intimate 6 Reformers Only
             </span>
           </div>
@@ -114,8 +119,8 @@ export const Hero: React.FC = () => {
       </div>
 
       {/* Center Immersive Typographic Spread */}
-      <div ref={spreadRef} className="relative z-10 w-full max-w-[1840px] mx-auto my-auto py-6 lg:py-4">
-        <div className="max-w-4xl space-y-3.5 sm:space-y-5 xl:space-y-6" ref={headlineRef}>
+      <div ref={spreadRef} className="relative z-10 w-full max-w-[1840px] mx-auto mt-auto mb-2 sm:my-auto py-4 sm:py-6 lg:py-4">
+        <div className="max-w-4xl space-y-3 sm:space-y-5 xl:space-y-6" ref={headlineRef}>
           
           {/* Subtitle / Slogan */}
           <div className="hero-line flex items-center gap-3">
@@ -126,7 +131,7 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Grand Oversized Serif Display Headline */}
-          <h1 className="hero-line font-serif text-4xl sm:text-6xl md:text-7xl lg:text-[clamp(3.6rem,5.5vw,6.5rem)] font-light text-ivory uppercase tracking-tight leading-[0.94]">
+          <h1 className="hero-line font-serif text-[clamp(1.85rem,8.4vw,2.35rem)] sm:text-6xl md:text-7xl lg:text-[clamp(3.6rem,5.5vw,6.5rem)] font-light text-ivory uppercase tracking-tight leading-[0.96] sm:leading-[0.94]">
             The Architecture <br />
             <span className="font-serif italic font-normal text-sand-200/90 tracking-normal">
               of Resistance.
@@ -143,7 +148,7 @@ export const Hero: React.FC = () => {
           <div ref={ctaRef} className="pt-1 sm:pt-2 flex items-center">
             <a
               href="#the-method"
-              className="px-7 py-3.5 xl:px-8 xl:py-4 rounded-full border border-ivory/30 hover:border-ivory text-ivory text-xs editorial-caps font-medium backdrop-blur-sm hover:bg-white/10 transition-all inline-flex items-center justify-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-sand-200"
+              className="px-7 py-3.5 xl:px-8 xl:py-4 rounded-full border border-ivory/30 hover:border-ivory text-ivory text-xs editorial-caps font-medium backdrop-blur-sm bg-forest-950/35 lg:bg-transparent hover:bg-white/10 transition-all inline-flex items-center justify-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-sand-200"
             >
               <span>Explore The Method</span>
               <ArrowDown className="w-3.5 h-3.5 text-sand-200 transition-transform duration-300 group-hover:translate-y-0.5" />
