@@ -4,17 +4,21 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { INSTRUCTORS, Instructor } from '../data/studioData';
 import { Quote, ArrowRight, MessageCircle, Sparkles } from 'lucide-react';
 import { getWhatsAppUrl } from '../config/whatsapp';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const InstructorSpotlight: React.FC = () => {
-  const [selectedInstructor, setSelectedInstructor] = useState<Instructor>(INSTRUCTORS[0]);
+  const { t } = useLanguage();
+  const [selectedInstructorId, setSelectedInstructorId] = useState<string>(INSTRUCTORS[0].id);
+  const selectedInstructor = INSTRUCTORS.find((inst) => inst.id === selectedInstructorId) || INSTRUCTORS[0];
+  const selectedTranslated = t.instructors.items[selectedInstructor.id];
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const portraitFrameRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
 
-  const whatsappUrl = getWhatsAppUrl(`Hello MERA Studio, I would like to inquire about a private 1-on-1 reformer session with ${selectedInstructor.name}.`);
+  const whatsappUrl = getWhatsAppUrl(t.whatsapp.instructorInquiry(selectedInstructor.name));
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -94,7 +98,7 @@ export const InstructorSpotlight: React.FC = () => {
         { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }
       );
     }
-    setSelectedInstructor(inst);
+    setSelectedInstructorId(inst.id);
   };
 
   return (
@@ -114,22 +118,21 @@ export const InstructorSpotlight: React.FC = () => {
           <div className="space-y-1.5 lg:space-y-1.5 max-w-2xl">
             <div className="flex items-center gap-3">
               <span className="hidden sm:inline font-mono text-[10px] text-clay-400 font-semibold tracking-widest uppercase">
-                [ Movement Directors ]
+                {t.instructors.bracketLabel}
               </span>
               <span className="hidden sm:block h-[1px] w-8 bg-clay-300"></span>
               <span className="editorial-caps text-[10px] max-sm:tracking-[0.18em] text-clay-400 sm:text-olive-500 font-semibold">
-                Anatomical Leadership
+                {t.instructors.eyebrow}
               </span>
             </div>
 
             <h2 className="font-serif text-[2rem] sm:text-5xl lg:text-[40px] xl:text-[44px] 2xl:text-[50px] font-light text-forest-950 leading-[1.08] lg:leading-[1.04] tracking-tight">
-              Guided by scholars <span className="italic font-normal text-clay-400">of biomechanics.</span>
+              {t.instructors.headingStart}<span className="italic font-normal text-clay-400">{t.instructors.headingItalic}</span>
             </h2>
           </div>
 
           <p className="hidden lg:block text-xs sm:text-sm 2xl:text-base text-olive-500 font-light max-w-md leading-relaxed lg:text-right">
-            Former classical soloists, kinesiology researchers, and physical rehabilitation specialists. 
-            Every session offers continuous anatomical calibration.
+            {t.instructors.desktopIntro}
           </p>
         </div>
 
@@ -154,7 +157,7 @@ export const InstructorSpotlight: React.FC = () => {
               {/* Floating Bottom Card */}
               <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5 lg:bottom-6 lg:left-6 lg:right-6 text-ivory space-y-0.5 lg:space-y-1">
                 <span className="editorial-caps text-[8.5px] lg:text-[9.5px] max-sm:tracking-[0.16em] text-sand-200 font-semibold tracking-widest block">
-                  {selectedInstructor.specialty}
+                  {selectedTranslated?.specialty ?? selectedInstructor.specialty}
                 </span>
                 <h3 className="font-serif text-2xl lg:text-3xl 2xl:text-4xl text-ivory font-light leading-tight">
                   {selectedInstructor.name}
@@ -169,11 +172,12 @@ export const InstructorSpotlight: React.FC = () => {
             {/* Instructor Quick Selector Pills */}
             <div className="space-y-1.5 lg:space-y-2">
               <span className="hidden lg:block editorial-caps text-[9.5px] font-bold text-clay-400 tracking-widest">
-                Select Director
+                {t.instructors.selectDirector}
               </span>
               <div className="grid grid-cols-3 sm:flex sm:flex-wrap gap-2 lg:gap-2.5">
                 {INSTRUCTORS.map((inst) => {
                   const isSelected = selectedInstructor.id === inst.id;
+                  const instT = t.instructors.items[inst.id];
                   return (
                     <button
                       key={inst.id}
@@ -189,7 +193,7 @@ export const InstructorSpotlight: React.FC = () => {
                       <span className="max-sm:hidden">{inst.name}</span>
                       <span className="sm:hidden">{inst.name.split(' ')[0]}</span>
                       <span className="hidden sm:inline opacity-75 ml-1.5 font-normal font-sans">
-                        ({inst.title.split('&')[0].trim()})
+                        ({instT?.shortRole ?? inst.title.split('&')[0].trim()})
                       </span>
                     </button>
                   );
@@ -200,10 +204,10 @@ export const InstructorSpotlight: React.FC = () => {
             {/* Title & Biography */}
             <div className="space-y-2 lg:space-y-2.5 xl:space-y-3">
               <h4 className="font-serif text-[1.5rem] sm:text-3xl xl:text-4xl text-forest-950 font-light leading-tight">
-                {selectedInstructor.title}
+                {selectedTranslated?.title ?? selectedInstructor.title}
               </h4>
               <p className="text-[13.5px] sm:text-sm xl:text-[15px] text-olive-500 font-light leading-[1.65] lg:leading-[1.7] max-w-2xl">
-                {selectedInstructor.bio}
+                {selectedTranslated?.bio ?? selectedInstructor.bio}
               </p>
             </div>
 
@@ -212,11 +216,11 @@ export const InstructorSpotlight: React.FC = () => {
               <div className="flex items-center gap-2 text-clay-400">
                 <Quote className="w-3.5 h-3.5" />
                 <span className="editorial-caps text-[9px] font-semibold text-olive-500 tracking-wider">
-                  Movement Philosophy
+                  {t.instructors.philosophyLabel}
                 </span>
               </div>
               <p className="font-serif italic text-base sm:text-lg xl:text-xl text-forest-950 leading-snug">
-                "{selectedInstructor.quote}"
+                "{selectedTranslated?.quote ?? selectedInstructor.quote}"
               </p>
             </div>
 
@@ -224,10 +228,10 @@ export const InstructorSpotlight: React.FC = () => {
             <div className="pt-3 lg:pt-4 xl:pt-5 border-t border-olive/15 flex flex-col xl:flex-row xl:items-end justify-between gap-4 lg:gap-4">
               <div className="hidden lg:block space-y-2">
                 <span className="editorial-caps text-[9px] font-bold text-olive-400 tracking-widest block">
-                  Credentials & Mastery
+                  {t.instructors.credentialsLabel}
                 </span>
                 <div className="flex flex-wrap gap-2">
-                  {selectedInstructor.credentials.map((cred, cIdx) => (
+                  {(selectedTranslated?.credentials ?? selectedInstructor.credentials).map((cred, cIdx) => (
                     <span
                       key={cIdx}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ivory border border-sand-300 text-forest-950 text-[11px] font-medium"
@@ -240,7 +244,7 @@ export const InstructorSpotlight: React.FC = () => {
               </div>
 
               <p className="lg:hidden text-xs text-olive-500 font-medium">
-                {selectedInstructor.credentials[0]} • {selectedInstructor.credentials[1]}
+                {(selectedTranslated?.credentials ?? selectedInstructor.credentials)[0]} • {(selectedTranslated?.credentials ?? selectedInstructor.credentials)[1]}
               </p>
 
               <a
@@ -250,7 +254,7 @@ export const InstructorSpotlight: React.FC = () => {
                 className="max-sm:w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 lg:py-3.5 xl:px-7 xl:py-3.5 rounded-full bg-olive text-ivory-50 hover:bg-olive-400 text-xs editorial-caps max-sm:tracking-[0.15em] font-semibold shadow-md lg:shadow-lg transition-colors duration-300 group active:scale-95 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-olive-500"
               >
                 <MessageCircle className="w-4 h-4 text-[#25D366] fill-[#25D366] shrink-0" />
-                <span>Inquire Private Session with {selectedInstructor.name.split(' ')[0]}</span>
+                <span>{t.instructors.inquireCta(selectedInstructor.name.split(' ')[0])}</span>
                 <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1 shrink-0" />
               </a>
             </div>

@@ -2,42 +2,23 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Sun, VolumeX, Shield, Sparkles } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const StudioSanctuary: React.FC = () => {
+  const { t } = useLanguage();
   const sanctuaryRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const scaleImageWrapperRef = useRef<HTMLDivElement>(null);
   const innerImgRef = useRef<HTMLImageElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
 
-  const sanctuaryPillars = [
-    {
-      icon: Sun,
-      label: 'Circadian Light',
-      title: 'Arched Casement Windows',
-      desc: '14-foot architectural apertures welcoming soft, natural morning daylight without harsh synthetic glare.'
-    },
-    {
-      icon: VolumeX,
-      label: 'Acoustic Serenity',
-      title: 'Mineral Lime Plaster',
-      desc: 'Natural lime coating absorbs urban noise, creating an acoustic cocoon where the only rhythm is your breath.'
-    },
-    {
-      icon: Shield,
-      label: 'Intimate Scale',
-      title: 'Strictly 6 Reformers',
-      desc: 'We permanently capped atelier capacity at six. You are never crowded, rushed, or lost in the background.'
-    },
-    {
-      icon: Sparkles,
-      label: 'Botanical Craft',
-      title: 'Hinoki & Smoked Sage',
-      desc: 'Organic essential oils continuously diffused to open airways and trigger autonomic nervous system calm.'
-    }
-  ];
+  const pillarIcons = [Sun, VolumeX, Shield, Sparkles];
+  const sanctuaryPillars = t.sanctuary.pillars.map((pillar, idx) => ({
+    ...pillar,
+    icon: pillarIcons[idx],
+  }));
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -142,21 +123,20 @@ export const StudioSanctuary: React.FC = () => {
             <div className="flex items-center gap-2.5 sm:gap-3">
               <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-clay-300"></span>
               <span className="editorial-caps text-[10px] max-sm:tracking-[0.18em] font-semibold text-sand-300 tracking-widest">
-                The Physical Sanctuary
+                {t.sanctuary.eyebrow}
               </span>
             </div>
             
             <h2 className="font-serif text-[2rem] sm:text-5xl lg:text-[36px] xl:text-[42px] 2xl:text-[50px] font-light text-ivory leading-[1.08] lg:leading-[1.04] tracking-tight">
-              An architectural space <span className="italic text-sand-200 font-normal">engineered for restoration.</span>
+              {t.sanctuary.headingStart}<span className="italic text-sand-200 font-normal">{t.sanctuary.headingItalic}</span>
             </h2>
           </div>
 
           <p className="lg:hidden text-[13.5px] sm:text-sm text-sand-300/85 font-light max-w-md leading-[1.6]">
-            Located on Broome Street in SoHo—crafted from mineral lime plaster and solid white oak.
+            {t.sanctuary.mobileIntro}
           </p>
           <p className="hidden lg:block text-xs sm:text-sm 2xl:text-base text-sand-300/85 font-light max-w-md leading-relaxed lg:text-right">
-            Located on Broome Street in SoHo. Every tactile material—from mineral lime plaster to hand-finished white oak—is 
-            chosen to calm sensory fatigue and return you to natural equilibrium.
+            {t.sanctuary.desktopIntro}
           </p>
         </div>
 
@@ -172,7 +152,7 @@ export const StudioSanctuary: React.FC = () => {
               <img
                 ref={innerImgRef}
                 src="/images/studio-interior-wide.jpg"
-                alt="MERA Reformer Studio interior showing solid white oak reformers, arched window and recessed illuminated niche"
+                alt={t.sanctuary.imageAlt}
                 loading="lazy"
                 className="w-full h-full object-cover object-center editorial-img-zoom will-change-transform"
               />
@@ -182,19 +162,19 @@ export const StudioSanctuary: React.FC = () => {
               <div className="absolute bottom-3.5 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex flex-col xl:flex-row xl:items-end justify-between gap-2 text-ivory">
                 <div className="space-y-0.5 sm:space-y-1">
                   <span className="editorial-caps text-[9px] sm:text-[9.5px] max-sm:tracking-[0.16em] text-sand-200 font-semibold tracking-widest block">
-                    The Main Atelier • 482 Broome Street, SoHo
+                    {t.sanctuary.imageAnnotation}
                   </span>
                   <p className="hidden lg:block font-serif italic text-xl sm:text-2xl 2xl:text-3xl text-ivory font-light leading-tight">
-                    "Where warm shadows dance against mineral lime plaster."
+                    {t.sanctuary.imageQuote}
                   </p>
                 </div>
 
                 <div className="hidden sm:flex flex-wrap items-center gap-2.5 sm:gap-3.5 text-[11px] text-sand-200/90 font-medium shrink-0">
-                  <span>Circadian Light</span>
+                  <span>{t.sanctuary.imageTags[0]}</span>
                   <span aria-hidden="true">•</span>
-                  <span>Solid Oak Frames</span>
+                  <span>{t.sanctuary.imageTags[1]}</span>
                   <span aria-hidden="true">•</span>
-                  <span>Acoustic Serenity</span>
+                  <span>{t.sanctuary.imageTags[2]}</span>
                 </div>
               </div>
             </div>

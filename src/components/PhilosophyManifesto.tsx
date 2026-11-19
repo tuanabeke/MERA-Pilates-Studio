@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const PhilosophyManifesto: React.FC = () => {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const watermarkRef = useRef<HTMLDivElement>(null);
   const imageFrameRef = useRef<HTMLDivElement>(null);
@@ -14,44 +16,8 @@ export const PhilosophyManifesto: React.FC = () => {
   const [activePillar, setActivePillar] = useState<number>(0);
   const [selectedSpring, setSelectedSpring] = useState<'light' | 'medium' | 'heavy'>('medium');
 
-  const pillars = [
-    {
-      num: '01',
-      title: 'Controlled Recoil',
-      headline: 'Strength is sculpted on the slow carriage return.',
-      description: 'Unlike dead weights where gravity dictates strain, our white oak reformer springs maintain constant linear resistance. Resisting the return elongates muscle fibers without joint impact.',
-    },
-    {
-      num: '02',
-      title: 'Skeletal Neutrality',
-      headline: 'The natural plumb line of the human spine.',
-      description: 'Before applying tension, our directors calibrate your pelvic tilt and spinal curvature. Every repetition recalibrates your posture from the foundation up.',
-    },
-    {
-      num: '03',
-      title: 'Parasympathetic Flow',
-      headline: 'Power without kinetic chaos.',
-      description: 'No screaming coaches or frantic tempo. Through deep diaphragmatic breath and smooth carriage glide, intense muscle work converts into deep mental clarity.',
-    }
-  ];
-
-  const springs = {
-    light: {
-      name: 'Feather Tension (1 Blue)',
-      role: 'Deep Core Stabilization & Balance',
-      note: 'Demands maximum internal abdominal recruitment to stabilize the free glide.'
-    },
-    medium: {
-      name: 'Signature MERA (1 Red + 1 Blue)',
-      role: 'Progressive Muscular Sculpting',
-      note: 'The foundational tension balancing muscular endurance with joint decompression.'
-    },
-    heavy: {
-      name: 'Athletic Kinetic (2 Red + 1 Green)',
-      role: 'Posterior Chain Power & Stamina',
-      note: 'Challenging high-resistance load for athletic propulsion and spinal endurance.'
-    }
-  };
+  const pillars = t.method.pillars;
+  const springs = t.method.springs;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -167,7 +133,7 @@ export const PhilosophyManifesto: React.FC = () => {
         className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none select-none opacity-5"
       >
         <span className="font-serif text-[120px] sm:text-[200px] lg:text-[280px] font-light tracking-tighter text-olive-900 leading-none block whitespace-nowrap">
-          EQUILIBRIUM
+          {t.method.watermark}
         </span>
       </div>
 
@@ -181,25 +147,24 @@ export const PhilosophyManifesto: React.FC = () => {
           <div className="space-y-1.5 lg:space-y-1 max-w-2xl">
             <div className="flex items-center gap-3">
               <span className="hidden sm:inline font-mono text-[10px] text-clay-400 font-semibold tracking-widest uppercase">
-                [ The Method ]
+                {t.method.bracketLabel}
               </span>
               <span className="hidden sm:block h-[1px] w-8 bg-clay-300"></span>
               <span className="editorial-caps text-[10px] max-sm:tracking-[0.18em] text-clay-400 sm:text-olive-500 font-semibold">
-                The MERA Method
+                {t.method.eyebrow}
               </span>
             </div>
 
             <h2 className="font-serif text-[2rem] sm:text-5xl lg:text-[38px] 2xl:text-[50px] font-light text-forest-950 leading-[1.08] lg:leading-[1.04] tracking-tight">
-              Movement designed <span className="italic font-normal text-clay-400">as architecture.</span>
+              {t.method.headingStart}<span className="italic font-normal text-clay-400">{t.method.headingItalic}</span>
             </h2>
           </div>
 
           <p className="lg:hidden text-[13.5px] sm:text-sm text-olive-500 font-light max-w-md leading-[1.6]">
-            Calibrated spring tension eliminates momentum and awakens dormant postural stabilizers.
+            {t.method.mobileIntro}
           </p>
           <p className="hidden lg:block text-xs sm:text-sm 2xl:text-base text-olive-500 font-light max-w-md leading-relaxed lg:text-right">
-            We treat the body not as a machine to exhaust, but as a living structure to realign. 
-            Calibrated spring tension eliminates momentum and awakens dormant postural stabilizers.
+            {t.method.desktopIntro}
           </p>
         </div>
 
@@ -215,7 +180,7 @@ export const PhilosophyManifesto: React.FC = () => {
               <img
                 ref={innerImgRef}
                 src="/images/mera-method-image.jpg"
-                alt="Practitioner in warm golden light executing controlled kneeling extension on a black MERA reformer"
+                alt={t.method.imageAlt}
                 loading="lazy"
                 className="w-full h-full object-cover object-[58%_center] lg:object-center editorial-img-zoom will-change-transform"
               />
@@ -227,17 +192,17 @@ export const PhilosophyManifesto: React.FC = () => {
               <div className="hidden lg:flex absolute top-4 left-4 sm:top-5 sm:left-5 bg-ivory/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-sand-300/80 shadow-md items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-clay-300 animate-pulse"></span>
                 <span className="editorial-caps text-[9px] sm:text-[9.5px] font-semibold text-forest-950">
-                  Controlled Tension • Axial Extension
+                  {t.method.imageBadge}
                 </span>
               </div>
 
               {/* Overlapping Statement (Desktop only so mobile photography remains pure) */}
               <div className="hidden lg:block absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-ivory space-y-1">
                 <span className="editorial-caps text-[9px] text-sand-200 tracking-widest font-semibold block">
-                  Biomechanical Focus
+                  {t.method.imageQuoteEyebrow}
                 </span>
                 <h3 className="font-serif text-xl sm:text-2xl xl:text-3xl font-light text-ivory leading-tight">
-                  "Strength is not exertion. <span className="italic font-normal text-clay-200">It is an act of alignment."</span>
+                  {t.method.imageQuoteStart}<span className="italic font-normal text-clay-200">{t.method.imageQuoteItalic}</span>
                 </h3>
               </div>
             </div>
@@ -250,7 +215,7 @@ export const PhilosophyManifesto: React.FC = () => {
             <div className="space-y-1 lg:space-y-1.5 2xl:space-y-2">
               <div className="hidden lg:flex items-center justify-between pb-1.5 border-b border-olive/15">
                 <span className="editorial-caps text-[10px] font-bold text-clay-400 tracking-widest">
-                  Three Core Pillars
+                  {t.method.pillarsHeader}
                 </span>
                 <span className="font-mono text-xs text-olive-400">
                   0{activePillar + 1} / 03
@@ -313,10 +278,10 @@ export const PhilosophyManifesto: React.FC = () => {
             <div className="hidden lg:block p-2.5 2xl:p-4 rounded-xl bg-sand-200/50 border border-sand-300/90 space-y-1.5 2xl:space-y-2 shrink-0">
               <div className="flex items-center justify-between text-xs">
                 <span className="editorial-caps font-bold text-forest-950 text-[9.5px] max-sm:tracking-[0.16em]">
-                  Precision Spring Resistance
+                  {t.method.springTitle}
                 </span>
                 <span className="hidden sm:inline font-mono text-[9.5px] text-clay-400 uppercase tracking-wider">
-                  Tactile Feel
+                  {t.method.springSubLabel}
                 </span>
               </div>
 
@@ -334,7 +299,7 @@ export const PhilosophyManifesto: React.FC = () => {
                         : 'text-forest-950 hover:text-clay-400'
                     }`}
                   >
-                    {key}
+                    {t.method.springLabels[key]}
                   </button>
                 ))}
               </div>

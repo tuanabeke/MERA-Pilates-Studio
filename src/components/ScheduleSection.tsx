@@ -3,11 +3,13 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SCHEDULE_ITEMS } from '../data/studioData';
 import { ArrowRight, MessageCircle, Calendar } from 'lucide-react';
-import { getWhatsAppUrl, WHATSAPP_CONFIG } from '../config/whatsapp';
+import { getWhatsAppUrl } from '../config/whatsapp';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const ScheduleSection: React.FC = () => {
+  const { t } = useLanguage();
   const [activeDay, setActiveDay] = useState<'Today' | 'Tomorrow' | 'Saturday' | 'Sunday'>('Today');
   const [selectedFormatFilter, setSelectedFormatFilter] = useState<string>('all');
 
@@ -110,21 +112,20 @@ export const ScheduleSection: React.FC = () => {
               <div className="flex items-center gap-2.5 sm:gap-3">
                 <Calendar className="w-3.5 h-3.5 max-lg:text-clay-400 lg:text-clay-300" />
                 <span className="editorial-caps text-[10px] max-sm:tracking-[0.18em] font-bold max-lg:text-clay-400 lg:text-sand-300 tracking-widest">
-                  Atelier Timetable
+                  {t.schedule.eyebrow}
                 </span>
               </div>
 
               <h2 className="font-serif text-[2rem] sm:text-5xl lg:text-[36px] 2xl:text-[48px] font-light max-lg:text-forest-950 lg:text-ivory leading-[1.06] lg:leading-[1.02] tracking-tight">
-                Studio <span className="italic font-normal max-lg:text-clay-400 lg:text-sand-200">schedule.</span>
+                {t.schedule.headingStart}<span className="italic font-normal max-lg:text-clay-400 lg:text-sand-200">{t.schedule.headingItalic}</span>
               </h2>
             </div>
 
             <p className="lg:hidden text-[13.5px] sm:text-sm text-olive-500 font-light max-w-md leading-[1.6]">
-              Strictly six reformer beds per session.
+              {t.schedule.mobileIntro}
             </p>
             <p className="hidden lg:block text-xs sm:text-sm 2xl:text-base text-sand-300/80 font-light max-w-md leading-relaxed lg:text-right">
-              Every class is capped strictly at six reformer beds. Select a session below to request availability 
-              directly with our SoHo concierge.
+              {t.schedule.desktopIntro}
             </p>
           </div>
 
@@ -147,7 +148,7 @@ export const ScheduleSection: React.FC = () => {
                         : 'max-lg:bg-ivory max-lg:text-forest-950/75 max-lg:border max-lg:border-sand-300/80 lg:bg-white/5 lg:text-sand-200 lg:border lg:border-transparent lg:hover:bg-white/10 lg:hover:text-ivory'
                     }`}
                   >
-                    {day}
+                    {t.schedule.days[day]}
                   </button>
                 );
               })}
@@ -155,7 +156,7 @@ export const ScheduleSection: React.FC = () => {
 
             <div className="hidden sm:flex items-center gap-3">
               <label htmlFor="schedule-filter" className="editorial-caps text-[10px] max-lg:text-olive-500 lg:text-sand-300/70 font-semibold">
-                Filter:
+                {t.schedule.filterLabel}
               </label>
               <select
                 id="schedule-filter"
@@ -163,11 +164,11 @@ export const ScheduleSection: React.FC = () => {
                 onChange={(e) => setSelectedFormatFilter(e.target.value)}
                 className="max-lg:bg-ivory max-lg:text-forest-950 max-lg:border-sand-300 lg:bg-forest-950/70 border lg:border-white/15 rounded-full px-4 py-1.5 2xl:py-2 text-xs editorial-caps lg:text-ivory focus:outline-none focus:ring-1 focus:ring-sand-300 cursor-pointer"
               >
-                <option value="all">All Classes</option>
-                <option value="mera-sculpt">MERA Sculpt</option>
-                <option value="classical-alignment">Classical Alignment</option>
-                <option value="athletic-flow">Athletic Flow</option>
-                <option value="restorative-decompress">Restorative Decompress</option>
+                <option value="all">{t.schedule.filterOptions.all}</option>
+                <option value="mera-sculpt">{t.schedule.filterOptions['mera-sculpt']}</option>
+                <option value="classical-alignment">{t.schedule.filterOptions['classical-alignment']}</option>
+                <option value="athletic-flow">{t.schedule.filterOptions['athletic-flow']}</option>
+                <option value="restorative-decompress">{t.schedule.filterOptions['restorative-decompress']}</option>
               </select>
             </div>
           </div>
@@ -177,13 +178,17 @@ export const ScheduleSection: React.FC = () => {
         <div ref={rowsRef} className="flex-1 min-h-0 flex flex-col justify-center divide-y max-lg:divide-olive/15 lg:divide-white/10 my-1">
           {filteredItems.length === 0 ? (
             <div className="py-12 text-center max-lg:text-olive-500 lg:text-sand-300/70 text-sm font-light">
-              No scheduled sessions match this filter on {activeDay}. Try viewing all classes or messaging our concierge for custom times.
+              {t.schedule.emptyState(t.schedule.days[activeDay])}
             </div>
           ) : (
             filteredItems.map((item) => {
               const isFull = item.spotsLeft === 0;
+              const translatedClassName = t.schedule.classNames[item.classId] ?? item.className;
+              const translatedDay = t.schedule.days[item.day];
+              const translatedLevel = t.schedule.levels[item.level] ?? item.level;
+              const translatedRole = t.schedule.instructorRoles[item.instructorRole] ?? item.instructorRole;
               const itemWhatsappUrl = getWhatsAppUrl(
-                WHATSAPP_CONFIG.timetableInquiry(item.time, item.className, item.day)
+                t.whatsapp.timetableInquiry(item.time, translatedClassName, translatedDay)
               );
 
               return (
@@ -198,16 +203,16 @@ export const ScheduleSection: React.FC = () => {
                         {item.time}
                       </span>
                       <h3 className="font-serif text-[22px] text-forest-950 font-normal leading-snug truncate">
-                        {item.className}
+                        {translatedClassName}
                       </h3>
                       <p className="text-[13px] text-olive-500 font-light truncate pt-0.5">
                         <span className="text-forest-950/85 font-normal">{item.instructor}</span>
                         <span className="mx-1.5 text-sand-400">·</span>
                         {isFull ? (
-                          <span className="text-clay-400 font-medium">Waitlist only</span>
+                          <span className="text-clay-400 font-medium">{t.schedule.mobileWaitlistOnly}</span>
                         ) : (
                           <span>
-                            {item.spotsLeft} {item.spotsLeft === 1 ? 'bed' : 'beds'} open
+                            {t.schedule.mobileBedsOpen(item.spotsLeft)}
                           </span>
                         )}
                       </p>
@@ -223,7 +228,7 @@ export const ScheduleSection: React.FC = () => {
                           : 'bg-forest-950 text-ivory hover:bg-forest-800'
                       }`}
                     >
-                      <span>{isFull ? 'Waitlist' : 'Reserve'}</span>
+                      <span>{isFull ? t.schedule.mobileWaitlistCta : t.schedule.mobileReserveCta}</span>
                     </a>
                   </div>
 
@@ -236,24 +241,24 @@ export const ScheduleSection: React.FC = () => {
                           {item.time}
                         </span>
                         <span className="font-mono text-[10px] text-sand-300/70 mt-0.5 block">
-                          {item.duration}
+                          {t.schedule.duration50Min}
                         </span>
                       </div>
 
                       <div className="space-y-0.5">
                         <div className="flex flex-wrap items-center gap-2.5">
                           <h3 className="font-serif text-lg sm:text-xl xl:text-2xl text-ivory font-normal group-hover:text-sand-200 transition-colors leading-tight">
-                            {item.className}
+                            {translatedClassName}
                           </h3>
                           <span className="editorial-caps text-[9px] font-semibold px-2.5 py-0.5 rounded-full bg-white/10 text-sand-200 border border-white/10">
-                            {item.level}
+                            {translatedLevel}
                           </span>
                         </div>
 
                         <div className="flex flex-wrap items-center gap-2 text-xs text-sand-300/80 font-light">
                           <span className="font-medium text-sand-100">{item.instructor}</span>
                           <span className="text-sand-400/50">•</span>
-                          <span>{item.instructorRole}</span>
+                          <span>{translatedRole}</span>
                         </div>
                       </div>
                     </div>
@@ -264,12 +269,12 @@ export const ScheduleSection: React.FC = () => {
                         {isFull ? (
                           <span className="inline-flex items-center gap-2 text-[10px] editorial-caps font-semibold text-clay-300">
                             <span className="w-1.5 h-1.5 rounded-full bg-clay-300"></span>
-                            Waitlist Only
+                            {t.schedule.desktopWaitlistOnly}
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-2 text-[10px] editorial-caps font-semibold text-sage-200">
                             <span className="w-1.5 h-1.5 rounded-full bg-sage-300 animate-pulse"></span>
-                            {item.spotsLeft} of {item.totalSpots} Beds Open
+                            {t.schedule.desktopBedsOpen(item.spotsLeft, item.totalSpots)}
                           </span>
                         )}
                       </div>
@@ -281,7 +286,7 @@ export const ScheduleSection: React.FC = () => {
                         className="px-5 py-2 xl:px-6 xl:py-2.5 rounded-full text-xs editorial-caps font-semibold bg-white/10 text-sand-200 hover:bg-white/20 hover:text-ivory transition-all duration-300 flex items-center gap-2 shadow-lg active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-sand-300"
                       >
                         <MessageCircle className="w-3.5 h-3.5 text-[#25D366] fill-[#25D366]" />
-                        <span>{isFull ? 'Join Waitlist' : 'Request Bed'}</span>
+                        <span>{isFull ? t.schedule.desktopWaitlistCta : t.schedule.desktopReserveCta}</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </a>
                     </div>
@@ -295,15 +300,15 @@ export const ScheduleSection: React.FC = () => {
         {/* Bottom Studio Note */}
         <div className="pt-3 lg:pt-2.5 xl:pt-3 border-t max-lg:border-olive/15 lg:border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs max-lg:text-olive-500 lg:text-sand-300/70 gap-2 sm:gap-3 shrink-0">
           <span className="hidden sm:inline editorial-caps text-[9.5px] max-sm:tracking-[0.14em] tracking-widest">
-            12-Hour Notice Window • Organic Grip Socks Required
+            {t.schedule.bottomNotice}
           </span>
           <a
-            href={getWhatsAppUrl(WHATSAPP_CONFIG.privateDuetInquiry())}
+            href={getWhatsAppUrl(t.whatsapp.privateDuetInquiry())}
             target="_blank"
             rel="noopener noreferrer"
             className="editorial-caps text-[9.5px] max-sm:tracking-[0.14em] max-lg:text-clay-400 lg:text-clay-300 max-lg:hover:text-forest-950 lg:hover:text-ivory underline transition-colors font-semibold"
           >
-            Looking for Private 1-on-1 Times? Message Concierge →
+            {t.schedule.privateTimesCta}
           </a>
         </div>
 

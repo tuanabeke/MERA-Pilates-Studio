@@ -3,15 +3,17 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MapPin, Mail, Instagram, MessageCircle, ArrowUpRight, Clock } from 'lucide-react';
 import { getWhatsAppUrl } from '../config/whatsapp';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const Footer: React.FC = () => {
+  const { t } = useLanguage();
   const footerRef = useRef<HTMLElement>(null);
   const locationCardRef = useRef<HTMLDivElement>(null);
   const colophonRef = useRef<HTMLDivElement>(null);
 
-  const whatsappUrl = getWhatsAppUrl("Hello MERA Studio, I would like to inquire about your reformer schedule and memberships.");
+  const whatsappUrl = getWhatsAppUrl(t.whatsapp.footerInquiry);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -75,7 +77,7 @@ export const Footer: React.FC = () => {
               <div className="flex items-center gap-2 sm:gap-2.5">
                 <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-clay-300"></span>
                 <span className="editorial-caps text-[10px] max-sm:tracking-[0.18em] font-bold text-sand-300 tracking-[0.25em]">
-                  SoHo Atelier Location
+                  {t.footer.eyebrow}
                 </span>
               </div>
 
@@ -85,11 +87,10 @@ export const Footer: React.FC = () => {
               </h2>
 
               <p className="hidden lg:block text-[13.5px] sm:text-sm xl:text-base text-sand-300/80 font-light max-w-lg leading-[1.65] lg:leading-relaxed pt-0.5">
-                Nestled on the quiet second floor above Broome Street, between West Broadway and Wooster. 
-                A private haven designed to quiet urban noise and return you to pure kinetic focus.
+                {t.footer.desktopDesc}
               </p>
               <p className="lg:hidden text-[13.5px] sm:text-sm text-sand-300/80 font-light max-w-lg leading-[1.6]">
-                Second floor above Broome Street, between West Broadway and Wooster.
+                {t.footer.mobileDesc}
               </p>
 
               <div className="pt-2 flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-3.5">
@@ -100,17 +101,17 @@ export const Footer: React.FC = () => {
                   className="max-sm:w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-3 rounded-full bg-white/10 hover:bg-white/20 text-xs editorial-caps max-sm:tracking-[0.16em] text-ivory font-semibold transition-all"
                 >
                   <MapPin className="w-3.5 h-3.5 text-clay-300" />
-                  <span>Open in Google Maps</span>
+                  <span>{t.footer.mapsCta}</span>
                 </a>
 
                 <a
-                  href={getWhatsAppUrl("Hello MERA Studio, I would like to schedule a visit to the SoHo atelier.")}
+                  href={getWhatsAppUrl(t.whatsapp.visitInquiry)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="max-sm:w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-3 rounded-full max-lg:bg-white/10 max-lg:hover:bg-white/20 max-lg:text-ivory lg:bg-ivory lg:text-forest-950 lg:hover:bg-sand-100 text-xs editorial-caps max-sm:tracking-[0.16em] font-semibold transition-all lg:shadow-md active:scale-95"
                 >
                   <MessageCircle className="w-3.5 h-3.5 text-[#25D366] fill-[#25D366]" />
-                  <span>Concierge Visit Request</span>
+                  <span>{t.footer.visitCta}</span>
                 </a>
               </div>
             </div>
@@ -120,16 +121,16 @@ export const Footer: React.FC = () => {
                 <div className="flex items-center gap-2 text-clay-300 text-xs">
                   <Clock className="w-4 h-4" />
                   <span className="editorial-caps text-[10px] max-sm:tracking-[0.16em] font-bold tracking-widest">
-                    Practice Hours
+                    {t.footer.hoursLabel}
                   </span>
                 </div>
                 <div className="space-y-1 text-[13px] sm:text-sm text-sand-200 font-light">
                   <div className="flex justify-between border-b border-white/5 py-1.5">
-                    <span>Monday – Friday</span>
+                    <span>{t.footer.weekdaysLabel}</span>
                     <span className="font-medium text-ivory">06:30 AM – 08:30 PM</span>
                   </div>
                   <div className="flex justify-between border-b border-white/5 py-1.5">
-                    <span>Saturday & Sunday</span>
+                    <span>{t.footer.weekendLabel}</span>
                     <span className="font-medium text-ivory">08:00 AM – 06:30 PM</span>
                   </div>
                 </div>
@@ -139,11 +140,11 @@ export const Footer: React.FC = () => {
                 <div className="flex items-center gap-2 text-clay-300 text-xs">
                   <Mail className="w-4 h-4" />
                   <span className="editorial-caps text-[10px] max-sm:tracking-[0.16em] font-bold tracking-widest">
-                    Direct Contact
+                    {t.footer.contactLabel}
                   </span>
                 </div>
                 <p className="text-[13px] sm:text-sm text-sand-200 font-light">
-                  concierge@merastudio.com • Strictly 6 reformers per session
+                  {t.footer.contactNote}
                 </p>
               </div>
             </div>
@@ -159,7 +160,7 @@ export const Footer: React.FC = () => {
             <div className="lg:col-span-4 flex items-center gap-3.5 sm:gap-4">
               <img
                 src="/images/mera-monogram-white.png"
-                alt="MERA Studio Monogram"
+                alt={t.footer.monogramAlt}
                 className="h-7 sm:h-8 w-auto object-contain shrink-0"
               />
               <div>
@@ -169,23 +170,23 @@ export const Footer: React.FC = () => {
                   </span>
                   <span className="text-sand-500">•</span>
                   <span className="font-serif italic text-base sm:text-lg text-sand-200 font-light leading-none">
-                    Where breath shapes form.
+                    {t.footer.slogan}
                   </span>
                 </div>
                 <span className="text-[8.5px] uppercase tracking-[0.2em] sm:tracking-[0.3em] text-sand-300/70 font-medium block mt-1.5">
-                  Reformer Studio — 482 Broome St, SoHo, NY 10013
+                  {t.footer.addressSubline}
                 </span>
               </div>
             </div>
 
             {/* Navigation Links (Span 5) */}
             <div className="lg:col-span-5 grid grid-cols-3 sm:flex sm:flex-wrap items-center lg:justify-center gap-x-4 sm:gap-x-6 gap-y-2.5 text-xs text-sand-300/80 font-light">
-              <a href="#the-method" className="hover:text-ivory transition-colors editorial-caps text-[10px] max-sm:tracking-[0.14em]">The Method</a>
-              <a href="#classes" className="hover:text-ivory transition-colors editorial-caps text-[10px] max-sm:tracking-[0.14em]">Classes</a>
-              <a href="#sanctuary" className="hover:text-ivory transition-colors editorial-caps text-[10px] max-sm:tracking-[0.14em]">The Sanctuary</a>
-              <a href="#instructors" className="hover:text-ivory transition-colors editorial-caps text-[10px] max-sm:tracking-[0.14em]">Instructors</a>
-              <a href="#schedule" className="hover:text-ivory transition-colors editorial-caps text-[10px] max-sm:tracking-[0.14em]">Schedule</a>
-              <a href="#membership" className="hover:text-ivory transition-colors editorial-caps text-[10px] max-sm:tracking-[0.14em]">Membership</a>
+              <a href="#the-method" className="hover:text-ivory transition-colors editorial-caps text-[10px] max-sm:tracking-[0.14em]">{t.nav.links.theMethod}</a>
+              <a href="#classes" className="hover:text-ivory transition-colors editorial-caps text-[10px] max-sm:tracking-[0.14em]">{t.nav.links.classes}</a>
+              <a href="#sanctuary" className="hover:text-ivory transition-colors editorial-caps text-[10px] max-sm:tracking-[0.14em]">{t.nav.links.sanctuary}</a>
+              <a href="#instructors" className="hover:text-ivory transition-colors editorial-caps text-[10px] max-sm:tracking-[0.14em]">{t.nav.links.instructors}</a>
+              <a href="#schedule" className="hover:text-ivory transition-colors editorial-caps text-[10px] max-sm:tracking-[0.14em]">{t.nav.links.schedule}</a>
+              <a href="#membership" className="hover:text-ivory transition-colors editorial-caps text-[10px] max-sm:tracking-[0.14em]">{t.nav.links.membership}</a>
             </div>
 
             {/* Direct Concierge CTA (Span 3 - Desktop Only since Mobile has Concierge Visit Request right above) */}
@@ -197,7 +198,7 @@ export const Footer: React.FC = () => {
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] text-white text-[11px] editorial-caps font-semibold shadow-lg hover:bg-[#20bd5a] active:scale-95 transition-all"
               >
                 <MessageCircle className="w-3.5 h-3.5 fill-current" />
-                <span>WhatsApp Concierge</span>
+                <span>{t.footer.whatsappCta}</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
             </div>
@@ -206,10 +207,10 @@ export const Footer: React.FC = () => {
 
           {/* Bottom Legal & Social Row */}
           <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-sand-400/60 gap-3">
-            <p>© {new Date().getFullYear()} MERA Reformer Studio. All rights reserved.</p>
+            <p>{t.footer.copyright(new Date().getFullYear())}</p>
             <div className="flex items-center space-x-6 text-[11px]">
-              <a href="#" className="hover:text-sand-200 transition-colors">Privacy</a>
-              <a href="#" className="hover:text-sand-200 transition-colors">Terms of Atelier</a>
+              <a href="#" className="hover:text-sand-200 transition-colors">{t.footer.privacy}</a>
+              <a href="#" className="hover:text-sand-200 transition-colors">{t.footer.terms}</a>
               <span className="text-sand-500">•</span>
               <a
                 href="https://instagram.com"

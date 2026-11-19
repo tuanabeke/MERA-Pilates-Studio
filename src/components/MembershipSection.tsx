@@ -3,11 +3,13 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MEMBERSHIP_TIERS } from '../data/studioData';
 import { Check, ArrowRight, ShieldCheck, MessageCircle } from 'lucide-react';
-import { getWhatsAppUrl, WHATSAPP_CONFIG } from '../config/whatsapp';
+import { getWhatsAppUrl } from '../config/whatsapp';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const MembershipSection: React.FC = () => {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -79,21 +81,20 @@ export const MembershipSection: React.FC = () => {
             <div className="inline-flex items-center gap-2 sm:gap-2.5">
               <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full max-lg:bg-clay-400 lg:bg-clay-300"></span>
               <span className="editorial-caps text-[10px] max-sm:tracking-[0.18em] font-bold max-lg:text-olive lg:text-sand-300 tracking-[0.25em]">
-                Atelier Commitments
+                {t.membership.eyebrow}
               </span>
             </div>
             
             <h2 className="font-serif text-[2rem] sm:text-5xl lg:text-[36px] 2xl:text-[48px] font-light max-lg:text-forest-950 lg:text-ivory leading-[1.08] lg:leading-[1.04] tracking-tight">
-              Invest in your body's <span className="italic font-normal max-lg:text-clay-400 lg:text-sand-200">architecture.</span>
+              {t.membership.headingStart}<span className="italic font-normal max-lg:text-clay-400 lg:text-sand-200">{t.membership.headingItalic}</span>
             </h2>
           </div>
           
           <p className="hidden lg:block text-[13.5px] sm:text-sm 2xl:text-base text-sand-300/80 font-light max-w-md leading-[1.65] lg:leading-relaxed lg:text-right">
-            Direct enrollment via WhatsApp concierge. Every tier includes our comprehensive 1-on-1 
-            biomechanical assessment.
+            {t.membership.desktopIntro}
           </p>
           <p className="lg:hidden text-[13.5px] sm:text-sm text-charcoal/75 font-light max-w-md leading-[1.6]">
-            Direct enrollment via WhatsApp concierge, including a 1-on-1 biomechanical assessment.
+            {t.membership.mobileIntro}
           </p>
         </div>
 
@@ -104,7 +105,9 @@ export const MembershipSection: React.FC = () => {
         >
           {MEMBERSHIP_TIERS.map((tier) => {
             const isPopular = tier.popular;
-            const tierWhatsappUrl = getWhatsAppUrl(WHATSAPP_CONFIG.membershipInquiry(tier.name));
+            const tierT = t.membership.tiers[tier.id];
+            const tierName = tierT?.name ?? tier.name;
+            const tierWhatsappUrl = getWhatsAppUrl(t.whatsapp.membershipInquiry(tierName));
 
             return (
               <div
@@ -120,13 +123,13 @@ export const MembershipSection: React.FC = () => {
                   <div className="flex items-start justify-between gap-3 md:block space-y-0.5 2xl:space-y-1">
                     <div>
                       <span className="editorial-caps text-[9px] max-sm:tracking-[0.16em] font-bold transition-colors duration-300 block tracking-widest max-lg:text-clay-400 lg:text-clay-300 lg:group-hover:text-sand-200">
-                        {tier.badge}
+                        {tierT?.badge ?? tier.badge}
                       </span>
                       <h3 className="font-serif text-2xl sm:text-2xl 2xl:text-3xl font-light transition-colors duration-300 leading-tight mt-0.5 max-lg:text-forest-950 lg:text-ivory lg:group-hover:text-sand-100">
-                        {tier.name}
+                        {tierName}
                       </h3>
                       <p className="text-xs font-light mt-0.5 max-lg:text-charcoal/70 lg:text-sand-300/70">
-                        {tier.subtitle}
+                        {tierT?.subtitle ?? tier.subtitle}
                       </p>
                     </div>
 
@@ -135,7 +138,7 @@ export const MembershipSection: React.FC = () => {
                         {tier.price}
                       </span>
                       <span className="editorial-caps text-[8.5px] tracking-[0.12em] block mt-1 text-charcoal/65">
-                        {tier.cadence}
+                        {tierT?.cadence ?? tier.cadence}
                       </span>
                     </div>
                   </div>
@@ -145,20 +148,20 @@ export const MembershipSection: React.FC = () => {
                       {tier.price}
                     </span>
                     <span className="editorial-caps text-[9px] max-lg:text-charcoal/65 lg:text-sand-300/70">
-                      / {tier.cadence}
+                      / {tierT?.cadence ?? tier.cadence}
                     </span>
                   </div>
 
                   <p className="hidden lg:block text-xs text-sand-200/80 font-light leading-relaxed">
-                    {tier.description}
+                    {tierT?.description ?? tier.description}
                   </p>
 
                   <div className="space-y-1.5 lg:space-y-1 2xl:space-y-2 max-lg:pt-3 max-lg:border-t max-lg:border-olive/15 lg:pt-0.5">
                     <span className="hidden lg:block editorial-caps text-[9px] font-semibold text-sand-200 tracking-wider">
-                      Privileges Included:
+                      {t.membership.privilegesLabel}
                     </span>
                     <ul className="space-y-2 lg:space-y-1 2xl:space-y-1.5">
-                      {tier.features.map((feat, idx) => (
+                      {(tierT?.features ?? tier.features).map((feat, idx) => (
                         <li
                           key={idx}
                           className={`${idx >= 3 ? 'hidden lg:flex' : 'flex'} items-start gap-2.5 lg:gap-2 text-[13px] lg:text-xs font-light max-lg:text-charcoal/85 lg:text-sand-200/90`}
@@ -180,7 +183,7 @@ export const MembershipSection: React.FC = () => {
                     className="w-full py-3.5 lg:py-2 2xl:py-3.5 px-5 rounded-full text-xs editorial-caps max-sm:tracking-[0.16em] font-semibold border transition-all duration-300 flex items-center justify-center gap-2.5 shadow-md lg:shadow-lg active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-sand-200 max-lg:bg-olive max-lg:text-ivory-50 max-lg:border-olive max-lg:hover:bg-olive-400 lg:bg-white/10 lg:text-ivory lg:border-white/10 lg:hover:bg-white/20 lg:hover:border-sand-300/35 lg:group-hover:bg-white/[0.14]"
                   >
                     <MessageCircle className="w-4 h-4 text-[#25D366] fill-[#25D366]" />
-                    <span>{tier.cta || 'Inquire via WhatsApp'}</span>
+                    <span>{tierT?.cta || tier.cta || t.membership.defaultCta}</span>
                     <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                   </a>
                 </div>
@@ -194,16 +197,16 @@ export const MembershipSection: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs max-lg:text-charcoal/75 lg:text-sand-300/80 gap-3 pt-3 lg:pt-2 2xl:pt-3.5 border-t max-lg:border-olive/15 lg:border-white/10 shrink-0">
           <div className="flex items-start sm:items-center gap-2.5">
             <ShieldCheck className="w-4 h-4 max-lg:text-clay-400 lg:text-clay-300 shrink-0 mt-0.5 sm:mt-0" />
-            <span className="leading-relaxed">Zero Lock-In: Pause, transfer, or adjust anytime with 14-day notice.</span>
+            <span className="leading-relaxed">{t.membership.assuranceText}</span>
           </div>
 
           <a
-            href={getWhatsAppUrl(WHATSAPP_CONFIG.privateDuetInquiry())}
+            href={getWhatsAppUrl(t.whatsapp.privateDuetInquiry())}
             target="_blank"
             rel="noopener noreferrer"
             className="editorial-caps text-[9.5px] max-sm:tracking-[0.14em] max-lg:text-forest-950 lg:text-clay-300 underline font-semibold hover:opacity-80 lg:hover:text-ivory transition-colors"
           >
-            Inquire About Private 1-on-1 & Duet Reformer Sessions →
+            {t.membership.privateDuetCta}
           </a>
         </div>
 

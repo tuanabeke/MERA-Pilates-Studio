@@ -2,10 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowDown } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const Hero: React.FC = () => {
+  const { t } = useLanguage();
   const heroRef = useRef<HTMLElement>(null);
   const bgImageRef = useRef<HTMLImageElement>(null);
   const spreadRef = useRef<HTMLDivElement>(null);
@@ -83,7 +85,7 @@ export const Hero: React.FC = () => {
         <img
           ref={bgImageRef}
           src="/images/mera-hero.jpg"
-          alt="MERA Reformer Pilates Studio sunlit space with white oak reformers"
+          alt={t.hero.imageAlt}
           className="w-full h-full object-cover object-[78.5%_center] sm:object-[74%_center] lg:object-center origin-[78.5%_center] sm:origin-[74%_center] lg:origin-center will-change-transform"
         />
         {/* Mobile Art-Directed Gradient Overlays: Keeps Subject Clear & Typography Legible */}
@@ -102,17 +104,17 @@ export const Hero: React.FC = () => {
           <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3 sm:px-3.5 py-1.5 rounded-full bg-forest-950/65 backdrop-blur-md border border-ivory/15">
             <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#25D366] animate-pulse shrink-0"></span>
             <span className="editorial-caps text-[9px] sm:text-[10.5px] font-semibold text-sand-200 tracking-[0.12em] sm:tracking-[0.24em]">
-              SoHo Atelier • Intimate 6 Reformers Only
+              {t.hero.eyebrowPrimary}
             </span>
           </div>
 
           <div className="hidden md:flex items-center gap-4 text-sand-300 text-xs">
             <span className="editorial-caps text-[10px] tracking-[0.2em] text-ivory/75">
-              Spring Intake Open
+              {t.hero.eyebrowSecondaryLeft}
             </span>
             <span aria-hidden="true">•</span>
             <span className="editorial-caps text-[10px] tracking-[0.2em] text-sand-200">
-              Bespoke Carriage Biomechanics
+              {t.hero.eyebrowSecondaryRight}
             </span>
           </div>
         </div>
@@ -126,22 +128,21 @@ export const Hero: React.FC = () => {
           <div className="hero-line flex items-center gap-3">
             <span className="h-[1px] w-8 sm:w-12 bg-sand-300/60"></span>
             <p className="font-serif italic text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-sand-200 font-light tracking-wide">
-              Where breath shapes form.
+              {t.hero.slogan}
             </p>
           </div>
 
           {/* Grand Oversized Serif Display Headline */}
           <h1 className="hero-line font-serif text-[clamp(1.85rem,8.4vw,2.35rem)] sm:text-6xl md:text-7xl lg:text-[clamp(3.6rem,5.5vw,6.5rem)] font-light text-ivory uppercase tracking-tight leading-[0.96] sm:leading-[0.94]">
-            The Architecture <br />
+            {t.hero.headlineLine1} <br />
             <span className="font-serif italic font-normal text-sand-200/90 tracking-normal">
-              of Resistance.
+              {t.hero.headlineLine2}
             </span>
           </h1>
 
           {/* Concise, confident editorial statement */}
           <p className="hero-line text-sm sm:text-base lg:text-base xl:text-lg text-sand-200/90 font-light max-w-xl leading-relaxed">
-            A boutique reformer sanctuary in SoHo designed for deep postural realignment. 
-            Stripped of fitness noise, calibrated to the rhythm of slow eccentric spring tension.
+            {t.hero.description}
           </p>
 
           {/* Primary Call to Action */}
@@ -150,7 +151,7 @@ export const Hero: React.FC = () => {
               href="#the-method"
               className="px-7 py-3.5 xl:px-8 xl:py-4 rounded-full border border-ivory/30 hover:border-ivory text-ivory text-xs editorial-caps font-medium backdrop-blur-sm bg-forest-950/35 lg:bg-transparent hover:bg-white/10 transition-all inline-flex items-center justify-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-sand-200"
             >
-              <span>Explore The Method</span>
+              <span>{t.hero.cta}</span>
               <ArrowDown className="w-3.5 h-3.5 text-sand-200 transition-transform duration-300 group-hover:translate-y-0.5" />
             </a>
           </div>

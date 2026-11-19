@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 import { getWhatsAppUrl } from '../config/whatsapp';
+import { useLanguage } from '../context/LanguageContext';
 
 // Minimal WhatsApp brand SVG icon
 const WhatsAppIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -20,8 +21,9 @@ export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [onLight, setOnLight] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
-  const whatsappUrl = getWhatsAppUrl("Hello MERA Studio, I would like to inquire about reserving a reformer session.");
+  const whatsappUrl = getWhatsAppUrl(t.whatsapp.navbarInquiry);
 
   // Track scroll position + which section is immediately below the navbar (light vs dark background)
   useEffect(() => {
@@ -63,16 +65,16 @@ export const Navbar: React.FC = () => {
   }, []);
 
   const leftNavLinks = [
-    { label: 'The Method', href: '#the-method' },
-    { label: 'Classes', href: '#classes' },
-    { label: 'The Sanctuary', href: '#sanctuary' },
+    { label: t.nav.links.theMethod, href: '#the-method' },
+    { label: t.nav.links.classes, href: '#classes' },
+    { label: t.nav.links.sanctuary, href: '#sanctuary' },
   ];
 
   const rightNavLinks = [
-    { label: 'Schedule', href: '#schedule' },
-    { label: 'Instructors', href: '#instructors' },
-    { label: 'Membership', href: '#membership' },
-    { label: 'Location', href: '#location' },
+    { label: t.nav.links.schedule, href: '#schedule' },
+    { label: t.nav.links.instructors, href: '#instructors' },
+    { label: t.nav.links.membership, href: '#membership' },
+    { label: t.nav.links.location, href: '#location' },
   ];
 
   // Light-on-dark vs dark-on-light navbar tone. An open mobile menu always uses the dark tone.
@@ -126,7 +128,7 @@ export const Navbar: React.FC = () => {
             <a
               href="#"
               className="flex items-center gap-2.5 xl:gap-3 group py-0.5 mr-1 xl:mr-3 shrink-0 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-sm"
-              aria-label="MERA Reformer Studio — back to top"
+              aria-label={t.nav.backToTopAria}
             >
               <span className="transition-transform duration-300 group-hover:scale-105">{logoImages('h-7')}</span>
               <div className="flex flex-col">
@@ -134,15 +136,15 @@ export const Navbar: React.FC = () => {
                   MERA
                 </span>
                 <span className={`text-[7.5px] uppercase tracking-[0.32em] font-medium mt-1 whitespace-nowrap transition-colors duration-300 ${textSub}`}>
-                  Reformer Studio
+                  {t.nav.brandSubtitle}
                 </span>
               </div>
             </a>
 
-            <nav aria-label="Primary sections" className="flex items-center lg:space-x-4 xl:space-x-7">
+            <nav aria-label={t.nav.primaryNavAria} className="flex items-center lg:space-x-4 xl:space-x-7">
               {leftNavLinks.map((link) => (
                 <a
-                  key={link.label}
+                  key={link.href}
                   href={link.href}
                   className={`editorial-caps text-[10px] xl:text-[11px] font-medium tracking-[0.16em] xl:tracking-[0.22em] whitespace-nowrap transition-colors duration-300 relative group py-1 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-sm ${linkTone}`}
                 >
@@ -158,26 +160,26 @@ export const Navbar: React.FC = () => {
             <a
               href="#"
               className="flex items-center gap-2.5 py-1 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-sm"
-              aria-label="MERA Reformer Studio — back to top"
+              aria-label={t.nav.backToTopAria}
             >
               {logoImages('h-6')}
               <div className="flex flex-col">
                 <span className={`font-serif text-[19px] tracking-[0.22em] uppercase font-light leading-none transition-colors duration-300 ${textMain}`}>
                   MERA
                 </span>
-                <span className={`text-[7.5px] uppercase tracking-[0.24em] font-medium mt-1 transition-colors duration-300 ${textSub}`}>
-                  Reformer Studio
+                <span className={`text-[7.5px] uppercase tracking-[0.24em] font-medium mt-1 whitespace-nowrap transition-colors duration-300 ${textSub}`}>
+                  {t.nav.brandSubtitle}
                 </span>
               </div>
             </a>
           </div>
 
-          {/* DESKTOP RIGHT: Schedule + Instructors + Membership + Location + WhatsApp Icon */}
+          {/* DESKTOP RIGHT: Schedule + Instructors + Membership + Location + Language Switcher + WhatsApp Icon */}
           <div className="hidden lg:flex items-center lg:space-x-4 xl:space-x-7">
-            <nav aria-label="Studio details" className="flex items-center lg:space-x-4 xl:space-x-7">
+            <nav aria-label={t.nav.studioNavAria} className="flex items-center lg:space-x-4 xl:space-x-7">
               {rightNavLinks.map((link) => (
                 <a
-                  key={link.label}
+                  key={link.href}
                   href={link.href}
                   className={`editorial-caps text-[10px] xl:text-[11px] font-medium tracking-[0.16em] xl:tracking-[0.22em] whitespace-nowrap transition-colors duration-300 relative group py-1 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-sm ${linkTone}`}
                 >
@@ -189,12 +191,45 @@ export const Navbar: React.FC = () => {
 
             <div className={`h-4 w-[1px] mx-1 transition-colors duration-300 ${dividerTone}`}></div>
 
+            {/* Minimal EN / TR Language Switcher */}
+            <div
+              role="group"
+              aria-label={t.nav.languageSwitcherAria}
+              className="flex items-center gap-1"
+            >
+              <button
+                type="button"
+                onClick={() => setLanguage('en')}
+                aria-pressed={language === 'en'}
+                className={`editorial-caps text-[10px] xl:text-[11px] tracking-[0.16em] px-1 py-0.5 transition-colors duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-sm ${
+                  language === 'en'
+                    ? `${textMain} font-semibold`
+                    : `${lightTone ? 'text-forest-950/45 hover:text-forest-950' : 'text-ivory/45 hover:text-ivory'} font-medium`
+                }`}
+              >
+                EN
+              </button>
+              <span aria-hidden="true" className={`text-[10px] select-none ${lightTone ? 'text-olive/35' : 'text-sand-300/35'}`}>/</span>
+              <button
+                type="button"
+                onClick={() => setLanguage('tr')}
+                aria-pressed={language === 'tr'}
+                className={`editorial-caps text-[10px] xl:text-[11px] tracking-[0.16em] px-1 py-0.5 transition-colors duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-sm ${
+                  language === 'tr'
+                    ? `${textMain} font-semibold`
+                    : `${lightTone ? 'text-forest-950/45 hover:text-forest-950' : 'text-ivory/45 hover:text-ivory'} font-medium`
+                }`}
+              >
+                TR
+              </button>
+            </div>
+
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              title="Connect with MERA Concierge on WhatsApp"
-              aria-label="Connect with MERA Concierge on WhatsApp"
+              title={t.nav.whatsappTitle}
+              aria-label={t.nav.whatsappTitle}
               className={`p-2 rounded-full active:scale-95 transition-all flex items-center justify-center group focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 ${iconHover}`}
             >
               <WhatsAppIcon className="w-5 h-5 opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all" />
@@ -203,11 +238,42 @@ export const Navbar: React.FC = () => {
 
           {/* MOBILE ACTIONS */}
           <div className="flex items-center gap-1.5 lg:hidden">
+            <div
+              role="group"
+              aria-label={t.nav.languageSwitcherAria}
+              className="flex items-center gap-0.5 mr-0.5"
+            >
+              <button
+                type="button"
+                onClick={() => setLanguage('en')}
+                aria-pressed={language === 'en'}
+                className={`editorial-caps text-[10px] tracking-[0.14em] px-1 py-1 transition-colors duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-sm ${
+                  language === 'en'
+                    ? `${textMain} font-semibold`
+                    : `${lightTone ? 'text-forest-950/45 hover:text-forest-950' : 'text-ivory/45 hover:text-ivory'} font-medium`
+                }`}
+              >
+                EN
+              </button>
+              <span aria-hidden="true" className={`text-[10px] select-none ${lightTone ? 'text-olive/35' : 'text-sand-300/35'}`}>/</span>
+              <button
+                type="button"
+                onClick={() => setLanguage('tr')}
+                aria-pressed={language === 'tr'}
+                className={`editorial-caps text-[10px] tracking-[0.14em] px-1 py-1 transition-colors duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-sm ${
+                  language === 'tr'
+                    ? `${textMain} font-semibold`
+                    : `${lightTone ? 'text-forest-950/45 hover:text-forest-950' : 'text-ivory/45 hover:text-ivory'} font-medium`
+                }`}
+              >
+                TR
+              </button>
+            </div>
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="WhatsApp Concierge"
+              aria-label={t.nav.whatsappLabel}
               className={`w-10 h-10 rounded-full active:scale-95 transition-all flex items-center justify-center focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 ${iconHover}`}
             >
               <WhatsAppIcon className="w-5 h-5" />
@@ -215,7 +281,7 @@ export const Navbar: React.FC = () => {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={`w-10 h-10 flex items-center justify-center transition-colors duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-sand-300 rounded-full ${lightTone ? 'text-forest-950 hover:text-olive-500' : 'text-ivory hover:text-sand-200'}`}
-              aria-label="Toggle Menu"
+              aria-label={t.nav.toggleMenuAria}
               aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -228,10 +294,10 @@ export const Navbar: React.FC = () => {
       {/* Mobile Slide-down Overlay (always dark for consistent contrast) */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-white/10 bg-forest-950/98 backdrop-blur-xl px-5 pt-5 pb-8 space-y-5 animate-in fade-in slide-in-from-top-2 duration-300 shadow-2xl text-ivory">
-          <nav aria-label="Mobile navigation" className="flex flex-col divide-y divide-white/10">
+          <nav aria-label={t.nav.mobileNavAria} className="flex flex-col divide-y divide-white/10">
             {[...leftNavLinks, ...rightNavLinks].map((link, idx) => (
               <a
-                key={link.label}
+                key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-3.5 flex items-center justify-between group active:opacity-75 transition-opacity"
@@ -258,7 +324,7 @@ export const Navbar: React.FC = () => {
               className="w-full py-3.5 rounded-full bg-ivory text-forest-950 text-xs editorial-caps tracking-[0.18em] font-semibold flex items-center justify-center gap-2.5 shadow-lg active:scale-95 transition-transform"
             >
               <WhatsAppIcon className="w-4 h-4" />
-              <span>WhatsApp Concierge</span>
+              <span>{t.nav.whatsappLabel}</span>
             </a>
             <p className="text-center text-[10px] editorial-caps tracking-[0.2em] text-sand-300/60">
               482 Broome St • SoHo, New York
